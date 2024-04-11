@@ -1,0 +1,75 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heritage Tourism App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #location-info {
+            text-align: center;
+        }
+
+        #error-message {
+            color: red;
+        }
+    </style>
+</head>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        getLocation();
+    });
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else {
+            document.getElementById("error-message").textContent = "Geolocation is not supported by this browser.";
+        }
+    }
+
+    function showPosition(position) {
+        const latitudeElement = document.getElementById("latitude");
+        const longitudeElement = document.getElementById("longitude");
+
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+
+        latitudeElement.textContent = "Latitude: " + latitude.toFixed(6);
+        longitudeElement.textContent = "Longitude: " + longitude.toFixed(6);
+    }
+
+    function showError(error) {
+        const errorMessageElement = document.getElementById("error-message");
+
+        switch (error.code) {
+            case error.PERMISSION_DENIED:
+                errorMessageElement.textContent = "User denied the request for Geolocation.";
+                break;
+            case error.POSITION_UNAVAILABLE:
+                errorMessageElement.textContent = "Location information is unavailable.";
+                break;
+            case error.TIMEOUT:
+                errorMessageElement.textContent = "The request to get user location timed out.";
+                break;
+            case error.UNKNOWN_ERROR:
+                errorMessageElement.textContent = "An unknown error occurred.";
+                break;
+        }
+    }
+</script>
+
+<body>
+    <div id="location-info">
+        <h2>Your Current Location:</h2>
+        <p id="latitude">Latitude: </p>
+        <p id="longitude">Longitude: </p>
+        <p id="error-message"></p>
+    </div>
+</body>
